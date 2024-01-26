@@ -1,19 +1,29 @@
+// Import necessary dependencies and components
 import { Link } from "react-router-dom";
 import Button from "../../../components/button/Button";
 import { useUserContext } from "../../../context/userContext";
 import Message from "../../../components/message/message";
 
+// Define the LoginPage component
 export default function LoginPage() {
+  // Destructure values from the user context using the custom hook
   const { setUserObj, userObj, loginUser, messageObj } = useUserContext();
 
+  // Render the LoginPage component
   return (
     <div className="container">
+      {/* Display a message if present */}
       {messageObj.message ? <Message messageObj={messageObj} /> : null}
+
+      {/* Display the heading for the login page */}
       <h1 className="my-5 text-primary text-center">Sign In</h1>
+
       <div className="row d-flex justify-content-center">
         <div className="col-md-6">
+          {/* Form for user login */}
           <form>
             <div className="mb-3">
+              {/* Email input */}
               <label htmlFor="exampleInputEmail1" className="form-label">
                 Email address
               </label>
@@ -33,6 +43,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-3">
+              {/* Password input */}
               <label htmlFor="exampleInputPassword1" className="form-label">
                 Password
               </label>
@@ -45,9 +56,11 @@ export default function LoginPage() {
                 className="form-control border-primary"
                 id="exampleInputPassword1"
               />
+              {/* Link to the registration page */}
               <Link to="/register">Are you not registered?</Link>
             </div>
-            <Button text={"LogIn"} fn={loginUser} />
+            {/* Button to trigger login */}
+            <Button text={"LogIn"} fn={loginUser} color={"primary"} />
           </form>
         </div>
       </div>

@@ -1,12 +1,30 @@
+// Import CSS files and other necessary dependencies
 import "./NavBar.css";
 import "../../index.css";
 import LogoImage from "../../images/LogoImage.jpg";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../context/userContext";
+import Button from "../button/Button";
 
+// Functional component for the navigation bar
 export default function NavBar() {
+  // Use the useNavigate hook from react-router-dom
+  const navigate = useNavigate();
+
+  // Use the useUserContext hook to access user-related context
+  const { logoutUser, isLoggedIn } = useUserContext();
+
+  // Async function to handle user logout
+  async function handleLogOut() {
+    // Call the logoutUser function
+    await logoutUser();
+    // Navigate to the home page ("/") after logout
+    navigate("/");
+  }
+
   return (
     <>
-    
+      {/* Navigation bar with Bootstrap styling */}
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <NavLink className="navbar-brand" to="/">
@@ -35,44 +53,44 @@ export default function NavBar() {
                   <i className="bi bi-house-door"></i> Home
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active text-primary fs-5"
-                  aria-current="page"
-                  to="/orders"
-                >
-                  My Orders
-                </NavLink>
-              </li>
 
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active text-primary fs-5"
-                  aria-current="page"
-                  to="/cart"
-                >
-                  Cart
-                </NavLink>
-              </li>
+              {isLoggedIn ? (
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link active text-primary fs-5"
+                    aria-current="page"
+                    to="/cart"
+                  >
+                    Cart
+                  </NavLink>
+                </li>
+              ) : null}
 
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active text-primary fs-5"
-                  aria-current="page"
-                  to="/cart"
-                >
-                  Log Out
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active text-primary fs-5"
-                  aria-current="page"
-                  to="/login"
-                >
-                  Log In
-                </NavLink>
-              </li>
+              {isLoggedIn ? (
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link active text-primary fs-5"
+                    aria-current="page"
+                    to="/cart"
+                  >
+                    <Button
+                      text={"Logout"}
+                      fn={handleLogOut}
+                      color={"danger"}
+                    />
+                  </NavLink>
+                </li>
+              ) : (
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link active text-primary fs-5"
+                    aria-current="page"
+                    to="/login"
+                  >
+                    <Button text={"Login"} fn={logoutUser} color={"success"} />
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
         </div>
